@@ -1,0 +1,29 @@
+{
+  "name": "test_project",
+  "version": "1.0.0",
+  "description": "test project for a trainee job",
+  "main": "main.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/main.js",
+    "dev": "nodemon"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "inversify": "^6.0.1",
+    "reflect-metadata": "^0.1.13",
+    "typescript": "^4.8.4"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jest": "^29.2.2",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1"
+  }
+}
