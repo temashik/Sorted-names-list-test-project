@@ -1,0 +1,29 @@
+CREATE TABLE names (
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(40) NOT NULL
+);
+
+CREATE TABLE users (
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(40) NOT NULL,
+	email VARCHAR(40) NOT NULL,
+	password VARCHAR(60) NOT NULL
+);
+
+CREATE TABLE names2users (
+    user_id INT UNSIGNED,
+    name_id INT UNSIGNED,
+	CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(id),
+	CONSTRAINT fk_name FOREIGN KEY(name_id) REFERENCES names(id),
+	PRIMARY KEY(user_id, name_id),
+    rate INT
+);
+
+CREATE TABLE names2users (
+	relation_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED,
+    name_id INT UNSIGNED,
+	CONSTRAINT fk_user FOREIGN KEY(user_id) REFERENCES users(id),
+	CONSTRAINT fk_name FOREIGN KEY(name_id) REFERENCES names(id),
+    rate INT
+);
