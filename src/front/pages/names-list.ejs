@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include ("../partials/header.ejs")%>
+	<script type="text/javascript" src="../ajax-delete.js"></script>
+</head>
+
+<body>
+	<form action="/names/addNameForm" method="get">
+		<input type="submit" value="Add Name" onfocus="onclick">
+	</form>
+	<div class="container">
+<% for(var i=0; i < names.length; i++) {%>
+<form id='<%= names[i].rate%>'' class="contentWrapper">
+<label for="name">Name: </label>
+<input type="text" value="<%= names[i].name%>" size='15' name='name'>
+<label for="rate">Rank: </label>
+<input type="text" value="<%= names[i].rate%>" size='15' name='rate'>
+<input value="<%= names[i].id%>" name="id" type="hidden">
+</form>
+<form action="/names/deleteName" method="post">
+	<input id="id" value="<%= names[i].id%>" name="id" type="hidden">
+	<input type="submit" value="Delete" onfocus="onclick">
+</form>	
+<form action="/names/editNameForm" method="get">
+	<input id="id" value="<%= names[i].id%>" name="id" type="hidden">
+	<input type="submit" value="Edit" onfocus="onclick">
+</form>	
+<form action="/names/ranking" method="get">
+	<input type="submit" value="Change Rank" onfocus="onclick">
+</form>	
+<%}%>
+	</div>
+</body>
+</html>

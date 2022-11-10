@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include ("../partials/header.ejs")%>
+	<script type="text/javascript" src="../ajax-add.js"></script>
+</head>
+
+<body>
+<form id="add" action="/names/addName" method="post"  class="contentWrapper">
+<label for="name">Name: </label>
+<input id="name" type="text" size='15' name='name'>
+<input type="submit" value="Add name" onfocus="onclick">
+<div id="error"></div>
+</form>
+</body>
+</html>

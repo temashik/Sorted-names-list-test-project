@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include ("../partials/header.ejs")%>
+	<script type="text/javascript" src="../ajax-edit.js"></script>
+</head>
+
+<body>
+<form id="edit" action="/names/editName" method="post"  class="contentWrapper">
+<label for="newName">New name: </label>
+<input id="newName" type="text" size='15' name='newName'>
+<label for="newRank">New rank: </label>
+<input id="newRank" type="text" size='15' name='newRank'>
+<input value="<%= id%>" name="id" id="id" type="hidden">
+<input type="submit" value="Edit name" onfocus="onclick">
+<div id="error"></div>
+</form>
+</body>
+</html>
