@@ -20,6 +20,7 @@ export class NameController extends BaseContorller implements INameController {
 		{ path: '/changeRank', method: 'post', func: this.moveRank },
 		{ path: '/addNameForm', method: 'get', func: this.addEntry },
 		{ path: '/editNameForm', method: 'get', func: this.editEntry },
+		{ path: '/logout', method: 'post', func: this.logout },
 	]);
 	}
 	async nameList(req: Request, res: Response): Promise<void> {
@@ -81,6 +82,7 @@ export class NameController extends BaseContorller implements INameController {
 		} else if(payload) {
 			const userId = JSON.parse(JSON.stringify(payload)).user_id;
 			await this.nameService.changeRank(userId, req.body.id, req.body.rank);
+			res.send('done');
 		}
 	}
 	addEntry(req: Request, res: Response): void {
@@ -89,5 +91,9 @@ export class NameController extends BaseContorller implements INameController {
 	editEntry(req: Request, res: Response): void {
 		const queryObject = url.parse(req.url, true).query;
 		res.render('edit.ejs', { title: 'Edit name', id: queryObject.id });
+	}
+	logout(req: Request, res: Response): void {
+		res.clearCookie('token');
+		res.end()
 	}
 }
