@@ -7,7 +7,11 @@ $(document).ready(() => {
 				id: $('#id').val(),
 			},
 			success: function (result) {
-				window.location.replace(`/`);
+				if(result.eMsg) {
+					$('#error').html('<strong>' + result.eMsg + '</strong>');
+				} else {
+					window.location.replace(`/`);
+				}
 			},
 		});
 		event.preventDefault();

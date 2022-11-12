@@ -66,12 +66,18 @@ export class NameController extends BaseContorller implements INameController {
 		} else if(payload) {
 			const userId = JSON.parse(JSON.stringify(payload)).user_id;
 			await this.nameService.changeName(req.body.id, userId, req.body.newName, req.body.newRank);
-			res.redirect('/');
+			res.redirect('/names');
 		}
 	}
 	async deleteName(req: Request, res: Response): Promise<void> {
+		if(!req.body.id) {
+			res.json({
+				eMsg: 'Select item to delete',
+			});
+			return;
+		}
 		await this.nameService.removeName(req.body.id);
-		res.redirect('/names');
+		res.send('success');
 	}
 	async moveRank(req: Request, res: Response): Promise<void> {
 		const payload = this.nameService.verifyJWT(req.cookies.token, process.env.SECRET || 'test');

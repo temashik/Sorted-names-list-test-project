@@ -6,11 +6,13 @@
 </head>
 
 <body>
+	<div class="form-container">
 <form id="add" action="/names/addName" method="post"  class="contentWrapper">
-<label for="name">Name: </label>
-<input id="name" type="text" size='15' name='name'>
-<input type="submit" value="Add name" onfocus="onclick">
+<label for="name" class="form-label">Name: </label>
+<input id="name" type="text" class="form-control" name='name'>
+<input type="submit" class="btn btn-primary" value="Add name" onfocus="onclick">
 <div id="error"></div>
 </form>
+	</div>
 </body>
 </html>

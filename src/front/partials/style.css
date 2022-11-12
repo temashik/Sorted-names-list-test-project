@@ -1,0 +1,35 @@
+.header-settings {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.action-container {
+	display: flex;
+}
+
+.names-container {
+	width: 20%;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.form-container {
+	width: 40%;
+	margin: 0 auto;
+}
+
+.li-border {
+	list-style-position: inside;
+	border: 1px solid black;
+	cursor: grab;
+	margin-bottom: 2px;
+}
+
+.div-name {
+	display: inline;
+}
+
+.selected-item {
+	background-color:mediumslateblue;
+}

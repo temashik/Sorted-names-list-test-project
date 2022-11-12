@@ -6,13 +6,15 @@
 </head>
 
 <body>
+	<div class="form-container">
 <form id="login" action="/login-response" method="post"  class="contentWrapper">
-<label for="email">Email: </label>
-<input id="email" class="email" type="email" size='15' name='email'>
-<label for="password">Password: </label>
-<input id="password" type="password" size='15' name='password'>
-<input type="submit" value="Log in" onfocus="onclick">
+<label for="email" class="form-label">Email: </label>
+<input id="email" class="form-control" type="email" name='email' placeholder="name@example.com">
+<label for="password" class="form-label">Password: </label>
+<input id="password" class="form-control" type="password" name='password'>
+<input type="submit" class="btn btn-primary" value="Log in" onfocus="onclick">
 <div id="error"></div>
 </form>
+	</div>
 </body>
 </html>

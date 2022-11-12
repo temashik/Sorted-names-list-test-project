@@ -1,5 +1,5 @@
 $(document).ready(() => {
-	$('#edit').submit(function (event) {
+	$('#editName').submit(function (event) {
 		$.ajax({
 			method: 'POST',
 			url: '/names/editName',

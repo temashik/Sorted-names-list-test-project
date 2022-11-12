@@ -1,13 +1,14 @@
 var order = [];
 $(document).ready(() => {
-    $.each( $('div.movable'), function(index,record){
+    $.each( $('div.div-name'), function(index,record){
         order.push($(record).data('rate'));
-    });    
-    $(".container").sortable({
+    });
+
+    $("ol").sortable({
         update: function( ) {
             let newIdOrder = [];
             let newRateOrder = [];
-            $.each( $('div.movable'), function(index,record){
+            $.each( $('div.div-name'), function(index,record){
                 newRateOrder.push($(record).data('rate'));
                 newIdOrder.push($(record).data('id'));
             });
@@ -16,17 +17,14 @@ $(document).ready(() => {
             let mismatchPoint = 0;
             for(let i = 0; i < newRateOrder.length; i++) {
                 if(order[i] != newRateOrder[i]) {
-                    console.log('first');
                     mismatchPoint = i;
                     break;
                 }
             }
             if(newRateOrder[mismatchPoint] > newRateOrder[mismatchPoint + 1]) {
-                console.log('second');
                 nameId = newIdOrder[mismatchPoint];
                 newRank = mismatchPoint + 1;
             } else {
-                console.log('else');
                 for(let i = newRateOrder.length; i > mismatchPoint; i--) {
                     if(order[i] != newRateOrder[i]) {
                         nameId = newIdOrder[i];

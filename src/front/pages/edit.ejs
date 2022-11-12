@@ -2,18 +2,19 @@
 <html>
 <head>
 	<%- include ("../partials/header.ejs")%>
-	<script type="text/javascript" src="../ajax-edit.js"></script>
 </head>
 
 <body>
-<form id="edit" action="/names/editName" method="post"  class="contentWrapper">
-<label for="newName">New name: </label>
-<input id="newName" type="text" size='15' name='newName'>
-<label for="newRank">New rank: </label>
-<input id="newRank" type="text" size='15' name='newRank'>
+	<div class="form-container">
+<form id="editName" action="/names/editName" method="post"  class="contentWrapper">
+<label for="newName" class="form-label">New name: </label>
+<input id="newName" type="text" class="form-control" name='newName'>
+<label for="newRank" class="form-label">New rank: </label>
+<input id="newRank" type="text" class="form-control" name='newRank'>
 <input value="<%= id%>" name="id" id="id" type="hidden">
-<input type="submit" value="Edit name" onfocus="onclick">
+<input type="submit" class="btn btn-primary" value="Edit name" onfocus="onclick">
 <div id="error"></div>
 </form>
+	</div>
 </body>
 </html>
