@@ -1,6 +1,6 @@
 var nameId;
 $(document).ready(() => {
-	$('.li-border').click(function (event) {
+	$('.bordered').click(function (event) {
 		nameId = $(this).children().data('id');
 		$('.selected-item').removeClass('selected-item');
 		$(this).addClass('selected-item');

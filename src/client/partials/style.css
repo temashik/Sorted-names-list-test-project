@@ -19,7 +19,7 @@
 	margin: 0 auto;
 }
 
-.li-border {
+.bordered {
 	list-style-position: inside;
 	border: 1px solid black;
 	cursor: grab;
