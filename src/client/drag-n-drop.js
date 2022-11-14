@@ -1,14 +1,14 @@
 var namesOrder = [];
 $(document).ready(() => {
-    $.each( $('.div-name'), function(index,record){
+    $.each( $('.name-container'), function(index,record){
         namesOrder.push($(record).data('rate'));
     });
-    console.log($('.names-ol'));
-    $(".names-ol").sortable({
+    console.log($('.names-list'));
+    $(".names-list").sortable({
         update: function() {
             let newNamesIdOrder = [];
             let newNamesRateOrder = [];
-            $.each($('.div-name'), function(index,record){
+            $.each($('.name-container'), function(index,record){
                 newNamesRateOrder.push($(record).data('rate'));
                 newNamesIdOrder.push($(record).data('id'));
             });
