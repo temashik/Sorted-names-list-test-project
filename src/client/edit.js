@@ -9,8 +9,8 @@ $(document).ready(() => {
 				newRank: $('#newRank').val(),
 			},
 			success: function (result) {
-				if (result.eMsg) {
-					$('#error').html('<strong>' + result.eMsg + '</strong>');
+				if (result.errorMessage) {
+					$('#error').html('<strong>' + result.errorMessage + '</strong>');
 				} else {
 					window.location.replace('/names/');
 				}

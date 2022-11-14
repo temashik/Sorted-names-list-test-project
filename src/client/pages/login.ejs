@@ -2,17 +2,17 @@
 <html>
 <head>
 	<%- include ("../partials/header.ejs")%>
-	<script type="text/javascript" src="../ajax-login.js"></script>
+	<script type="text/javascript" src="../login.js"></script>
 </head>
 
 <body>
 	<div class="form-container">
-<form id="login" action="/login-response" method="post"  class="contentWrapper">
+<form id="login" action="/login" method="post">
 <label for="email" class="form-label">Email: </label>
 <input id="email" class="form-control" type="email" name='email' placeholder="name@example.com">
 <label for="password" class="form-label">Password: </label>
 <input id="password" class="form-control" type="password" name='password'>
-<input type="submit" class="btn btn-primary" value="Log in" onfocus="onclick">
+<input type="submit" class="btn btn-primary" value="Log in">
 <div id="error"></div>
 </form>
 	</div>

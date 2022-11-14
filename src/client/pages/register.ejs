@@ -2,19 +2,19 @@
 <html>
 <head>
 	<%- include ("../partials/header.ejs")%>
-	<script type="text/javascript" src="../ajax-register.js"></script>
+	<script type="text/javascript" src="../register.js"></script>
 </head>
 
 <body>
 	<div class="form-container">
-<form id="register" action="/register-response" method="post" class="contentWrapper">
+<form id="register" action="/register" method="post">
 <label for="name" class="form-label">Name: </label>
 <input id="name" type="text" class="form-control" name='name'>
 <label for="email" class="form-label">Email: </label>
 <input id="email" type="email" class="form-control" name='email'>
 <label for="password" class="form-label">Password: </label>
 <input id="password" type="password" class="form-control" name='password'>
-<input type="submit" class="btn btn-primary" value="Register" onfocus="onclick">
+<input type="submit" class="btn btn-primary" value="Register">
 <div id="error"></div>
 </form>
 	</div>

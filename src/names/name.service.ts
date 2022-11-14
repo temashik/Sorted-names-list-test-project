@@ -1,17 +1,16 @@
 import { inject, injectable } from "inversify";
-import { IDatabaseService } from "../common/database.service.interface";
 import { TYPES } from "../types";
 import { Name } from "./name.entity";
 import { INameService } from "./name.service.interface";
 import 'reflect-metadata';
-import { JwtPayload, verify } from "jsonwebtoken";
+import { INamesDatabaseRepository } from "./names.db.repository.interface";
 
 @injectable()
 export class NameService implements INameService {
-	constructor(@inject(TYPES.DatabaseService) private dbService: IDatabaseService) {}
+	constructor(@inject(TYPES.NamesDatabaseRepository) private dbRepo: INamesDatabaseRepository) {}
 
 	async showNames(userId: number): Promise<Name[]> {
-		const names = await this.dbService.getNames(userId);
+		const names = await this.dbRepo.getNames(userId);
 		const result = [];
 		for (let elem of names) {
 			result.push(new Name(elem.name, elem.rate, elem.id));
@@ -20,11 +19,11 @@ export class NameService implements INameService {
 	}
 	
 	async createName(name: string): Promise<boolean> {
-		const res = await this.dbService.nameDupe(name);
-		if (res.length > 0) {
+		const res = await this.dbRepo.isNameExist(name);
+		if (res) {
 			return false;
 		} else {
-			await this.dbService.createName(name);
+			await this.dbRepo.createName(name);
 			console.log('Name added');
 			return true;
 		}
@@ -37,28 +36,17 @@ export class NameService implements INameService {
 		newRank?: number | undefined,
 		): Promise<void> {
 			if(newName) {
-				await this.dbService.changeName(nameId, newName);
+				await this.dbRepo.changeName(nameId, newName);
 			} 
 			if(newRank) {
-				await this.dbService.changeRank(userId, nameId, newRank);
+				await this.dbRepo.changeRank(userId, nameId, newRank);
 			}
 		}
 	
 	async removeName(nameId: number): Promise<void> {
-		await this.dbService.deleteName(nameId);
+		await this.dbRepo.deleteName(nameId);
 	}
 	async changeRank(userId: number, nameId: number, newRank: number): Promise<void> {
-		await this.dbService.changeRank(userId, nameId, newRank);
+		await this.dbRepo.changeRank(userId, nameId, newRank);
 	}
-  
-
-	verifyJWT(JWT: string, secret: string): string | JwtPayload | null {
-		verify(JWT, secret, (err, payload) => {
-			if(err) return null;
-			else if(payload) return payload;
-		})
-		const verifyResult = verify(JWT, secret);
-		return verifyResult;
-	}
-
 }

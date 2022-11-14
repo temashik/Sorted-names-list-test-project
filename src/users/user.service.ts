@@ -4,31 +4,31 @@ import { IUserService } from './user.service.interface';
 import 'dotenv/config';
 import { User } from './user.entity';
 import { UserLoginDto, UserRegisterDto } from './user.dto';
-import { sign } from 'jsonwebtoken';
+import { JwtPayload, sign, verify } from 'jsonwebtoken';
 import { TYPES } from '../types';
-import { IDatabaseService } from '../common/database.service.interface';
+import { IUsersDatabaseRepository } from './users.db.repository.interface';
 
 @injectable()
 export class UserService implements IUserService {
-	constructor(@inject(TYPES.DatabaseService) private dbService: IDatabaseService) {}
+	constructor(@inject(TYPES.UsersDatabaseRepository) private dbRepo: IUsersDatabaseRepository) {}
 	
 	async createUser({ name, email, password }: UserRegisterDto): Promise<boolean> {
 		const newUser = new User(name, email);
 		const salt = Number(process.env.SALT) || 6;
 		await newUser.setPassword(password, salt);
-		const res = await this.dbService.existedUser(newUser.email);
-		if (res.length > 0) {
+		const res = await this.dbRepo.isUserExist(newUser.email);
+		if (res) {
 			return false;
 		} else {
-			await this.dbService.createUser(newUser.name, newUser.email, newUser.password);
+			await this.dbRepo.createUser(newUser.name, newUser.email, newUser.password);
 			console.log('Account added');
 			return true;
 		}
 	}
 
 	async validateUser({ email, password }: UserLoginDto): Promise<User | null> {
-		const res = await this.dbService.existedUser(email);
-		if (res[0].email == undefined) {
+		const res = await this.dbRepo.getUser(email);
+		if (res.length == 0) {
 			return null;
 		}
 		const newUser = new User(
@@ -45,7 +45,6 @@ export class UserService implements IUserService {
 	}
 
 	async signJWT(email: string, user_id: number, secret: string): Promise<string> {
-		// const user_id = (await this.dbService.existedUser(email))[0].id;
 		return new Promise<string>((resolve, reject) => {
 			sign(
 				{
@@ -62,5 +61,14 @@ export class UserService implements IUserService {
 					else if(token) resolve(token);
 			})
 		});
+	}
+
+	verifyJWT(JWT: string, secret: string): string | JwtPayload | null {
+		verify(JWT, secret, (err, payload) => {
+			if(err) return null;
+			else if(payload) return payload;
+		})
+		const verifyResult = verify(JWT, secret);
+		return verifyResult;
 	}
 }

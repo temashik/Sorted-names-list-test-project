@@ -7,7 +7,6 @@ import cookieParser from 'cookie-parser';
 import { UserController } from './users/user.controller';
 import { NameController } from './names/name.controller';
 import path from 'path';
-import consolidate from 'consolidate';
 
 @injectable()
 export class App {
@@ -32,9 +31,8 @@ export class App {
 		this.app.use(json());
 		this.app.use(cookieParser());
 		this.app.use(urlencoded({ extended: false }));
-		this.app.use(express.static(path.join(__dirname, 'front')));
-		//this.app.engine('html', consolidate.ejs);
-		this.app.set('views', __dirname + '/front/pages');
+		this.app.use(express.static(path.join(__dirname, 'client')));
+		this.app.set('views', __dirname + '/client/pages');
 		this.app.set('view engine', 'html');
 	}
 

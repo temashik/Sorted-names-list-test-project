@@ -1,18 +1,18 @@
 /* #startregion User entity procedures */
 
-DROP PROCEDURE IF EXISTS isExisted;
+DROP PROCEDURE IF EXISTS isUserExist;
 DELIMITER &&  
-CREATE PROCEDURE isExisted (IN value VARCHAR(40))  
+CREATE PROCEDURE isExisted (IN user_email VARCHAR(40))  
 BEGIN  
-    SELECT * FROM users WHERE email = value;  
+    SELECT * FROM users WHERE email = user_email;  
 END &&  
 DELIMITER ;    
 
 DROP PROCEDURE IF EXISTS createUser;
 DELIMITER &&  
-CREATE PROCEDURE createUser (IN nameStr VARCHAR(40), IN emailStr VARCHAR(40), IN passStr VARCHAR(90))  
+CREATE PROCEDURE createUser (IN user_name VARCHAR(40), IN user_email VARCHAR(40), IN user_pass VARCHAR(90))  
 BEGIN  
-    INSERT INTO users (name, email, password) VALUES (nameStr, emailStr, passStr);  
+    INSERT INTO users (name, email, password) VALUES (user_name, user_email, user_pass);  
     SELECT @new_user_id := LAST_INSERT_ID();
     SET @rate := 0;
     INSERT INTO names2users (user_id, name_id, rate) 
@@ -35,43 +35,43 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS createName;
 DELIMITER &&  
-CREATE PROCEDURE createName (IN nameStr VARCHAR(40))  
+CREATE PROCEDURE createName (IN user_name VARCHAR(40))  
 BEGIN  
 	SELECT @default_rate := COUNT(id) + 1 FROM names;
-	INSERT INTO names (name) VALUES(nameStr);
+	INSERT INTO names (name) VALUES(user_name);
     SELECT @new_name_id := LAST_INSERT_ID();
 	INSERT INTO names2users (user_id, name_id, rate) 
 	SELECT id, @new_name_id, @default_rate FROM users;
 END 
 DELIMITER ;
 
-DROP PROCEDURE IF EXISTS nameDupe;
+DROP PROCEDURE IF EXISTS isNameExist;
 DELIMITER &&  
-CREATE PROCEDURE nameDupe (IN nameStr VARCHAR(40))  
+CREATE PROCEDURE nameDupe (IN entered_name VARCHAR(40))  
 BEGIN  
-    SELECT * FROM names WHERE name = nameStr;  
+    SELECT * FROM names WHERE name = entered_name;  
 END &&  
 DELIMITER ; 
 
 DROP PROCEDURE IF EXISTS changeName;
 DELIMITER &&  
-CREATE PROCEDURE changeName (IN n_id INT, IN newName VARCHAR(40))  
+CREATE PROCEDURE changeName (IN n_id INT, IN new_name VARCHAR(40))  
 BEGIN  
-    UPDATE names SET name = newName WHERE id = n_id;
+    UPDATE names SET name = new_name WHERE id = n_id;
 END &&  
 DELIMITER ; 
 
 DROP PROCEDURE IF EXISTS changeRank;
 DELIMITER &&  
-CREATE PROCEDURE changeRank (IN u_id INT, IN n_id INT, IN newRank INT)  
+CREATE PROCEDURE changeRank (IN u_id INT, IN n_id INT, IN new_rank INT)  
 BEGIN  
     SELECT @old_rank := rate FROM names2users WHERE user_id = u_id AND name_id = n_id;
-    IF @old_rank > newRank THEN 
-        UPDATE names2users SET rate = rate+1 WHERE user_id = u_id AND rate < @old_rank AND rate >= newRank;
-        UPDATE names2users SET rate = newRank WHERE user_id = u_id AND name_id = n_id;
-    ELSEIF @old_rank < newRank THEN
-        UPDATE names2users SET rate = rate-1 WHERE user_id = u_id AND rate > @old_rank  AND rate <= newRank;
-        UPDATE names2users SET rate = newRank WHERE user_id = u_id AND name_id = n_id;
+    IF @old_rank > new_rank THEN 
+        UPDATE names2users SET rate = rate+1 WHERE user_id = u_id AND rate < @old_rank AND rate >= new_rank;
+        UPDATE names2users SET rate = new_rank WHERE user_id = u_id AND name_id = n_id;
+    ELSEIF @old_rank < new_rank THEN
+        UPDATE names2users SET rate = rate-1 WHERE user_id = u_id AND rate > @old_rank  AND rate <= new_rank;
+        UPDATE names2users SET rate = new_rank WHERE user_id = u_id AND name_id = n_id;
     END IF;
 END &&  
 DELIMITER ; 
@@ -90,8 +90,8 @@ BEGIN
         IF done THEN
             LEAVE update_loop;
         END IF;
-        SELECT @oldRank := n2u.rate FROM names2users n2u WHERE n2u.name_id = n_id AND n2u.user_id = u_id;
-        UPDATE names2users n2u SET n2u.rate = n2u.rate-1 WHERE n2u.rate > @oldRank AND n2u.user_id = u_id;
+        SELECT @old_rank := n2u.rate FROM names2users n2u WHERE n2u.name_id = n_id AND n2u.user_id = u_id;
+        UPDATE names2users n2u SET n2u.rate = n2u.rate-1 WHERE n2u.rate > @old_rank AND n2u.user_id = u_id;
     END LOOP;
 
   CLOSE userIdCursor;

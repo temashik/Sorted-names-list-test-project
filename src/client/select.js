@@ -1,6 +1,6 @@
 var nameId;
 $(document).ready(() => {
-	$('li').click(function (event) {
+	$('.li-border').click(function (event) {
 		nameId = $(this).children().data('id');
 		$('.selected-item').removeClass('selected-item');
 		$(this).addClass('selected-item');
@@ -13,8 +13,8 @@ $(document).ready(() => {
 				id: nameId,
 			},
 			success: function (result) {
-				if(result.eMsg) {
-					$('#error').html('<strong>' + result.eMsg + '</strong>');
+				if(result.errorMessage) {
+					$('#error').html('<strong>' + result.errorMessage + '</strong>');
 				} else {
 					window.location.replace(`/names`);
 				}

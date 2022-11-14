@@ -1,9 +1,9 @@
 import { injectable } from "inversify";
-import { IDatabaseService } from "./database.service.interface";
-import getConnection from "./db.connection";
+import getConnection from "../common/db.connection";
+import { INamesDatabaseRepository } from "./names.db.repository.interface";
 
 @injectable()
-export class DatabaseService implements IDatabaseService {
+export class NamesDatabaseRepository implements INamesDatabaseRepository {
 	async getNames(userId: number): Promise<any[]> {
 		const connection = await getConnection();
 		const res = JSON.parse(JSON.stringify(await connection.execute('CALL getNames(?)', [userId])))[0][0];
@@ -11,11 +11,15 @@ export class DatabaseService implements IDatabaseService {
 		return res;
 	}
 
-	async nameDupe(name: string): Promise<JSON[]> {
+	async isNameExist(name: string): Promise<boolean> {
 		const connection = await getConnection();
-		const res = JSON.parse(JSON.stringify(await connection.execute('CALL nameDupe(?)', [name])))[0][0];
+		const res = JSON.parse(JSON.stringify(await connection.execute('CALL isNameExist(?)', [name])))[0][0];
 		connection.end();
-		return res;
+		if (res.length > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	async createName(name: string): Promise<void> {
@@ -38,19 +42,6 @@ export class DatabaseService implements IDatabaseService {
 	async deleteName(nameId: number): Promise<void> {
 		const connection = await getConnection();
 		await connection.execute('CALL deleteName(?)', [nameId]);
-		connection.end();
-	}
-
-	async existedUser(email: string): Promise<any[]> {
-		const connection = await getConnection();
-		const res = JSON.parse(JSON.stringify(await connection.execute('CALL isExisted(?)', [email])))[0][0];
-		connection.end();
-		return res;
-	}
-
-	async createUser(name: string, email: string, password: string): Promise<void> {
-		const connection = await getConnection();
-		await connection.execute('CALL createUser(?,?,?)', [name, email, password]);
 		connection.end();
 	}
 }

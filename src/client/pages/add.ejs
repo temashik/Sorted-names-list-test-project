@@ -2,15 +2,15 @@
 <html>
 <head>
 	<%- include ("../partials/header.ejs")%>
-	<script type="text/javascript" src="../ajax-add.js"></script>
+	<script type="text/javascript" src="../add.js"></script>
 </head>
 
 <body>
 	<div class="form-container">
-<form id="add" action="/names/addName" method="post"  class="contentWrapper">
+<form id="add" action="/names/addName" method="post">
 <label for="name" class="form-label">Name: </label>
 <input id="name" type="text" class="form-control" name='name'>
-<input type="submit" class="btn btn-primary" value="Add name" onfocus="onclick">
+<input type="submit" class="btn btn-primary" value="Add name">
 <div id="error"></div>
 </form>
 	</div>

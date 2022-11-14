@@ -13,8 +13,8 @@ export class UserController extends BaseContorller implements IUserController {
 	constructor(@inject(TYPES.UserService) private userService: IUserService) {
 		super();
 		this.bindRoutes([
-			{ path: '/login-response', method: 'post', func: this.login }, 
-			{ path: '/register-response', method: 'post', func: this.register },
+			{ path: '/login', method: 'post', func: this.login }, 
+			{ path: '/register', method: 'post', func: this.register },
 			{ path: '/login', method: 'get', func: this.loginEntry },
 			{ path: '/register', method: 'get', func: this.registerEntry },
 			{ path: '/', method: 'get', func: this.entryPoint },
@@ -24,14 +24,14 @@ export class UserController extends BaseContorller implements IUserController {
 	public async login(req: Request<{}, {}, UserLoginDto>, res: Response): Promise<void> {
 		if (!req.body.email || !req.body.password) {
 			res.json({
-				eMsg: 'You must fill all fields',
+				errorMessage: 'You must fill all fields',
 			});
 			return;
 		}
 		const result = await this.userService.validateUser(req.body);
 		if (!result) {
 			res.json({
-				eMsg: 'Your email or password is invalid',
+				errorMessage: 'Your email or password is invalid',
 			});
 		} else if (result.id) {
 			const jwt = await this.userService.signJWT(req.body.email, result.id, process.env.SECRET || 'test');
@@ -45,18 +45,21 @@ export class UserController extends BaseContorller implements IUserController {
 	async register(req: Request<{}, {}, UserRegisterDto>, res: Response): Promise<void> {
 		if (!req.body.name || !req.body.email || !req.body.password) {
 			res.json({
-				eMsg: 'You must fill all fields',
+				errorMessage: 'You must fill all fields',
 			});
 			return;
 		}
 		const result = await this.userService.createUser(req.body);
 		if (!result) {
-			res.send('This email already registered');
+			res.json({
+				errorMessage: 'This email already registered',
+			});
 			return;
+		} else {
+			res.json({
+				msg: 'You successfully registered',
+			});
 		}
-		res.json({
-			msg: 'You successfully registered',
-		});
 	}
 
 	loginEntry(req: Request, res: Response): void {

@@ -2,17 +2,18 @@
 <html>
 <head>
 	<%- include ("../partials/header.ejs")%>
+	<script type="text/javascript" src="../../edit.js"></script>
 </head>
 
 <body>
 	<div class="form-container">
-<form id="editName" action="/names/editName" method="post"  class="contentWrapper">
+<form id="editName" action="/names/editName" method="post">
 <label for="newName" class="form-label">New name: </label>
 <input id="newName" type="text" class="form-control" name='newName'>
 <label for="newRank" class="form-label">New rank: </label>
 <input id="newRank" type="text" class="form-control" name='newRank'>
 <input value="<%= id%>" name="id" id="id" type="hidden">
-<input type="submit" class="btn btn-primary" value="Edit name" onfocus="onclick">
+<input type="submit" class="btn btn-primary" value="Edit name">
 <div id="error"></div>
 </form>
 	</div>

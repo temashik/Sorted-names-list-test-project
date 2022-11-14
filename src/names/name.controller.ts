@@ -7,13 +7,17 @@ import { INameController } from "./name.controller.interface";
 import { INameService } from "./name.service.interface";
 import 'dotenv/config';
 import url from 'url';
+import { IUserService } from "../users/user.service.interface";
 
 @injectable()
 export class NameController extends BaseContorller implements INameController {
-	constructor(@inject(TYPES.NameService) private nameService: INameService) {
+	constructor(
+		@inject(TYPES.NameService) private nameService: INameService,
+		@inject(TYPES.UserService) private userService: IUserService,
+		) {
 		super();
 		this.bindRoutes([
-		{ path: '/', method: 'get', func: this.nameList }, 
+		{ path: '/', method: 'get', func: this.namesList }, 
 		{ path: '/addName', method: 'post', func: this.addName },
 		{ path: '/editName', method: 'post', func: this.editName },
 		{ path: '/deleteName', method: 'post', func: this.deleteName },
@@ -23,73 +27,55 @@ export class NameController extends BaseContorller implements INameController {
 		{ path: '/logout', method: 'post', func: this.logout },
 	]);
 	}
-	async nameList(req: Request, res: Response): Promise<void> {
-		const payload = this.nameService.verifyJWT(req.cookies.token, process.env.SECRET || 'test');
-		if(!payload) {
-			res.json({
-				eMsg: 'You are not authenticated',
-			});
-		} else if(payload) {
-			const names = await this.nameService.showNames(JSON.parse(JSON.stringify(payload)).user_id);
+	async namesList(req: Request, res: Response): Promise<void> {
+		const payload = this.userService.verifyJWT(req.cookies.token, process.env.SECRET || 'test');
+		const names = await this.nameService.showNames(JSON.parse(JSON.stringify(payload)).user_id);
 			res.render('names-list.ejs', {
 				title: 'Names list',
 				names,
 			});
-		}
 	}
 	async addName(req: Request, res: Response): Promise<void> {
 		if(!req.body.name) {
 			res.json({
-				eMsg: 'Name field is empty',
+				errorMessage: 'Name field is empty',
 			});
 			return;
 		}
 		const result = await this.nameService.createName(req.body.name);
 		if (!result) {
 			res.json({
-				eMsg: 'Something went wrong. New name has not added.',
+				errorMessage: 'This name is already exists. New name has not added.',
 			});
-		} else res.redirect('/');
+		} else res.sendStatus(200);
 	}
 	async editName(req: Request, res: Response): Promise<void> {
 		if(!req.body.newName && !req.body.newRank) {
 			res.json({
-				eMsg: 'Enter at least one value to change',
+				errorMessage: 'Enter at least one value to change',
 			});
 			return;
 		}
-		const payload = this.nameService.verifyJWT(req.cookies.token, process.env.SECRET || 'test');
-		if(!payload) {
-			res.json({
-				eMsg: 'You are not authenticated',
-			});
-		} else if(payload) {
-			const userId = JSON.parse(JSON.stringify(payload)).user_id;
-			await this.nameService.changeName(req.body.id, userId, req.body.newName, req.body.newRank);
-			res.redirect('/names');
-		}
+		const payload = this.userService.verifyJWT(req.cookies.token, process.env.SECRET || 'test');
+		const userId = JSON.parse(JSON.stringify(payload)).user_id;
+		await this.nameService.changeName(req.body.id, userId, req.body.newName, req.body.newRank);
+		res.sendStatus(200);
 	}
 	async deleteName(req: Request, res: Response): Promise<void> {
 		if(!req.body.id) {
 			res.json({
-				eMsg: 'Select item to delete',
+				errorMessage: 'Select item to delete',
 			});
 			return;
 		}
 		await this.nameService.removeName(req.body.id);
-		res.send('success');
+		res.sendStatus(200);
 	}
 	async moveRank(req: Request, res: Response): Promise<void> {
-		const payload = this.nameService.verifyJWT(req.cookies.token, process.env.SECRET || 'test');
-		if(!payload) {
-			res.json({
-				eMsg: 'You are not authenticated',
-			});
-		} else if(payload) {
-			const userId = JSON.parse(JSON.stringify(payload)).user_id;
-			await this.nameService.changeRank(userId, req.body.id, req.body.rank);
-			res.send('done');
-		}
+		const payload = this.userService.verifyJWT(req.cookies.token, process.env.SECRET || 'test');
+		const userId = JSON.parse(JSON.stringify(payload)).user_id;
+		await this.nameService.changeRank(userId, req.body.id, req.body.rank);
+		res.sendStatus(200);
 	}
 	addEntry(req: Request, res: Response): void {
 		res.render('add.ejs', { title: 'Add name' });

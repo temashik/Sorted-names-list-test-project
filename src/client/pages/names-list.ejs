@@ -3,8 +3,8 @@
 <head>
 	<%- include ("../partials/header.ejs")%>
 	<script type="text/javascript" src="../drag-n-drop.js"></script>
-	<script type="text/javascript" src="../ajax-logout.js"></script>
-	<script type="text/javascript" src="../ajax-select.js"></script>
+	<script type="text/javascript" src="../logout.js"></script>
+	<script type="text/javascript" src="../select.js"></script>
   	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 </head>
 
@@ -12,24 +12,24 @@
 	<header class="header-settings">
 		<div class="action-container">
 	<form action="/names/addNameForm" method="get">
-		<input type="submit" class="btn btn-success" value="Add Name" onfocus="onclick">
+		<input type="submit" class="btn btn-success" value="Add Name">
 	</form>
 	<form id="delete" action="/names/deleteName" method="post">
-		<input type="submit" class="btn btn-danger" value="Delete" onfocus="onclick">
+		<input type="submit" class="btn btn-danger" value="Delete">
 	</form>	
 	<form id="edit" action="/names/editNameForm" method="get">
-		<input type="submit" class="btn btn-warning" value="Edit" onfocus="onclick">
+		<input type="submit" class="btn btn-warning" value="Edit">
 	</form>	
 	</div>
 	<div>
 	<form id="logout" action="/names/logout" method="post">
-		<input type="submit" class="btn btn-secondary" value="logout" onfocus="onclick">
+		<input type="submit" class="btn btn-secondary" value="Logout">
 	</form>
 	</div>
 	</header>
 	<div class="names-container">
 		<h2>Names List</h2>
-		<ol>
+		<ol class="names-ol">
 <% for(var i=0; i < names.length; i++) {%>
 	<li class="li-border">
 	<div data-id="<%= names[i].id%>" data-rate="<%= names[i].rate%>" class="div-name"><%= names[i].name%></div>
