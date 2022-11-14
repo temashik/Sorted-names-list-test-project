@@ -1,4 +1,5 @@
 node_modules
 /dist
-.env
 nodemon.json
+.env
+node_modules/.package-lock.json
