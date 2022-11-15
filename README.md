@@ -2,7 +2,7 @@
 Test project, which display sorted list of names.
 ## Installation
 1. Clone this repo.
-2. Create database in any way you want and create account for accessing it (I use OpenServer).
+2. Create database in any way you want and create account for accessing it (I use OpenServer). Then copy SQL queries from /database/db.create.sql and from /database/stored.procedures.sql and execute to create tables for project and save procedures, which are user in code.
 3. Create .env file with next variables or store it in variables environment:
         PORT=/*number of port you use (8000 for example)*/
         DB_HOST=/*address of yours database (127.0.0.1 or 'localhost' if it runs on your own computer)*/
