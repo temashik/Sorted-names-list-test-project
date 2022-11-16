@@ -20,3 +20,4 @@ Test project, which display sorted list of names.
 3. Run 'npm run start'. Then open browser and paste 'http://localhost:8000'.
 ### Walkthrough
 https://youtu.be/YoOBRdyawXE
+Text variant: https://docs.google.com/document/d/1Y6A_mSiaS9icyieN4zQey8OBWEZYzPpD/edit?usp=sharing&ouid=111189365704837639343&rtpof=true&sd=true
