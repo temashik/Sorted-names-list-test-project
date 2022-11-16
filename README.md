@@ -19,4 +19,4 @@ Test project, which display sorted list of names.
 2. Copy 'src/client' folder to '/dist'.
 3. Run 'npm run start'. Then open browser and paste 'http://localhost:8000'.
 ### Walkthrough
-*In progress*
+https://youtu.be/YoOBRdyawXE
